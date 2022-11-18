@@ -20,6 +20,42 @@ function createDragNDrop(store: VueFlowStore): DragNDropState {
     onDragStart.trigger({ event, type })
   }
 
+  function handleTouchStart(event: TouchEvent, type: DragNodeType) {
+    nodeType.value = type
+
+    const element = event.target as HTMLElement
+    const elementCopy = element.cloneNode(true) as HTMLElement
+    elementCopy.style.position = 'absolute'
+    elementCopy.style.top = `${event.touches[0].clientY}px`
+    elementCopy.style.left = `${event.touches[0].clientX}px`
+
+    document.body.appendChild(elementCopy)
+
+    const touchMoveHandler = (event: TouchEvent) => {
+      elementCopy.style.top = `${event.touches[0].clientY}px`
+      elementCopy.style.left = `${event.touches[0].clientX}px`
+    }
+
+    const touchEndHandler = () => {
+      const elementsUnderCursor = document.elementsFromPoint(event.changedTouches[0].clientX, event.changedTouches[0].clientY)
+
+      if (elementsUnderCursor.length) {
+        const dropTarget = elementsUnderCursor.find((el) => el.classList.contains('vue-flow'))
+        if (dropTarget) {
+          const dropEvent = new DragEvent('drop')
+          dropTarget.dispatchEvent(dropEvent)
+        }
+      }
+
+      document.body.removeChild(elementCopy)
+      document.removeEventListener('touchmove', touchMoveHandler)
+      document.removeEventListener('touchend', touchEndHandler)
+    }
+
+    document.addEventListener('touchmove', touchMoveHandler)
+    document.addEventListener('touchend', touchEndHandler)
+  }
+
   function handleDragOver(event: DragEvent) {
     event.preventDefault()
 
@@ -72,6 +108,7 @@ function createDragNDrop(store: VueFlowStore): DragNDropState {
   return {
     nodeType,
     handleDragStart,
+    handleTouchStart,
     onDragStart: onDragStart.on,
     onDragOver: onDragOver.on,
     onDrop: onDrop.on,

@@ -17,6 +17,7 @@ export interface OnDropData<CustomType extends string = any> {
 export interface DragNDropState<CustomType extends string = any> {
   nodeType: Ref<DragNodeType<CustomType> | undefined>
   handleDragStart: (event: DragEvent, type: DragNodeType<CustomType>) => void
+  handleTouchStart: (event: TouchEvent, type: DragNodeType<CustomType>) => void
   onDragStart: (callback: (data: OnDragStartEventData<CustomType>) => void) => void
   onDragOver: (callback: (event: DragEvent) => void) => void
   onDrop: (callback: (data: OnDropData<CustomType>) => void) => void
