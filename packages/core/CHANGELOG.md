@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.5.1
+
+### Patch Changes
+
+- [#454](https://github.com/bcakmakoglu/vue-flow/pull/454) [`fc15fa3`](https://github.com/bcakmakoglu/vue-flow/commit/fc15fa3276689744ef5f41f2b8560c8370cd37e6) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Update model-value regardless of element arr length
+
 ## 1.5.0
 
 ### Minor Changes
